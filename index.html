@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Finance Adviser</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/phosphor-icons"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center p-4">
+
+    <div class="w-full h-full bg-white rounded-3xl shadow-2xl overflow-hidden transition-all duration-500">
+        
+        <header class="bg-white border-b border-gray-200 p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center sticky top-0 z-10">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-green-600 mb-4 sm:mb-0 transform hover:scale-105 transition-transform">
+                <i class="ph-bold ph-chart-line text-green-500 mr-2" aria-hidden="true"></i>AI Finance
+            </h1>
+            <nav class="flex flex-wrap justify-center sm:justify-end gap-2">
+                <button onclick="showPage('dashboard')" class="nav-item text-gray-700 hover:text-green-600 font-medium px-3 py-2 rounded-md transition-colors">
+                    <i class="ph-bold ph-gauge-circle-half mr-1" aria-hidden="true"></i> Dashboard
+                </button>
+                <button onclick="showPage('transactions')" class="nav-item text-gray-700 hover:text-green-600 font-medium px-3 py-2 rounded-md transition-colors">
+                    <i class="ph-bold ph-receipt mr-1" aria-hidden="true"></i> Add Transactions
+                </button>
+                <button onclick="showPage('goals')" class="nav-item text-gray-700 hover:text-green-600 font-medium px-3 py-2 rounded-md transition-colors">
+                    <i class="ph-bold ph-target mr-1" aria-hidden="true"></i> Goals
+                </button>
+                <button onclick="showPage('suggestions')" class="nav-item text-gray-700 hover:text-green-600 font-medium px-3 py-2 rounded-md transition-colors">
+                    <i class="ph-bold ph-lightbulb-fil mr-1" aria-hidden="true"></i> AI Suggestions
+                </button>
+                <button onclick="showPage('chatbot')" class="nav-item text-gray-700 hover:text-green-600 font-medium px-3 py-2 rounded-md transition-colors">
+                    <i class="ph-bold ph-chat-circle-dots mr-1" aria-hidden="true"></i> Chatbot
+                </button>
+            </nav>
+        </header>
+
+        <main class="p-8 sm:p-12">
+            <section id="welcome" class="page active text-center py-20" aria-labelledby="welcome-heading">
+                <h2 id="welcome-heading" tabindex="-1" class="text-4xl sm:text-5xl font-extrabold text-green-600 mb-6 animate-fade-in-down">Welcome to AI Finance Adviser</h2>
+                <p class="text-xl sm:text-2xl text-gray-600 max-w-2xl mx-auto mb-8 animate-fade-in">
+                    Your personal AI assistant for smart budgeting, saving, and financial planning.
+                </p>
+                <button onclick="showPage('login')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 animate-fade-in-up">
+                    <i class="ph-bold ph-arrow-right-circle mr-2" aria-hidden="true"></i> Get Started
+                </button>
+            </section>
+
+            <section id="login" class="page" aria-labelledby="login-heading">
+                <div class="login-container max-w-md mx-auto p-8 bg-white rounded-3xl shadow-2xl transition-all duration-300">
+                    <div class="text-center mb-8">
+                        <h2 id="login-heading" tabindex="-1" class="text-3xl font-bold text-green-600">Secure Access</h2>
+                        <p id="login-subheading" class="text-gray-500 mt-2">Log in to your financial dashboard</p>
+                    </div>
+                    
+                    <form onsubmit="event.preventDefault();">
+                        
+                        <div id="login-status-message" aria-live="polite" class="text-center font-semibold mb-4"></div>
+
+                        <div class="mb-4">
+                            <label for="username" class="block text-gray-700 text-sm font-semibold mb-2">Username</label>
+                            <input type="text" id="username" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password</label>
+                            <input type="password" id="password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400" required>
+                        </div>
+
+                        <div class="mb-6 hidden" id="confirmPasswordGroup">
+                            <label for="confirmPassword" class="block text-gray-700 text-sm font-semibold mb-2">Confirm Password</label>
+                            <input type="password" id="confirmPassword" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        </div>
+                        
+                        <div id="loginButtons">
+                            <button type="button" onclick="handleLoginSubmit(event)" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition-colors">Log In</button>
+                            <p class="text-center text-sm text-gray-600 mt-4">
+                                New user? 
+                                <a href="#" onclick="toggleRegisterMode(event, true)" class="font-medium text-green-700 hover:underline">Create an account</a>
+                            </p>
+                        </div>
+                        
+                        <div id="registerButtons" class="hidden">
+                            <button type="button" onclick="handleRegisterSubmit(event)" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition-colors">Create Account</button>
+                            <p class="text-center text-sm text-gray-600 mt-4">
+                                Already have an account? 
+                                <a href="#" onclick="toggleRegisterMode(event, false)" class="font-medium text-blue-700 hover:underline">Log In</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <section id="dashboard" class="page" aria-labelledby="dashboard-heading">
+                <h2 id="dashboard-heading" tabindex="-1" class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center">Your Financial Overview</h2>
+                <div class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow-lg text-center mb-8 border-t-4 border-indigo-500">
+                    <h3 class="text-lg font-semibold text-gray-600 mb-2">Your Financial Health Score</h3>
+                    <div id="healthScoreDisplay" class="text-6xl font-extrabold text-indigo-600">--</div>
+                    <p id="healthScoreMessage" class="text-gray-500 mt-2">Log transactions to calculate your score.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-inner mb-8">
+                    <canvas id="financialChart" class="w-full h-64 sm:h-96" role="img" aria-label="Line chart showing income vs expenses over the last 6 months."></canvas>
+                    <div class="sr-only">
+                        <table>
+                            <caption>Monthly Income vs. Expenses Data</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Month</th><th scope="col">Income</th><th scope="col">Expenses</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>January</td><td>₹1,200</td><td>₹800</td></tr>
+                                <tr><td>February</td><td>₹1,500</td><td>₹1,000</td></tr>
+                                <tr><td>March</td><td>₹1,300</td><td>₹900</td></tr>
+                                <tr><td>April</td><td>₹1,400</td><td>₹1,100</td></tr>
+                                <tr><td>May</td><td>₹1,600</td><td>₹1,050</td></tr>
+                                <tr><td>June</td><td>₹1,700</td><td>₹1,200</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center mt-8">Challenges & Rewards</h3>
+                <div id="challengesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8"></div>
+            </section>
+
+            <section id="transactions" class="page" aria-labelledby="transactions-heading">
+                <h2 id="transactions-heading" tabindex="-1" class="text-3xl font-bold text-gray-800 text-center mb-8">Log a New Transaction</h2>
+                <div class="max-w-xl mx-auto p-8 rounded-3xl shadow-2xl bg-white border border-gray-200">
+                    <form onsubmit="handleTransactionSubmit(event)">
+                        <div id="form-status-message" aria-live="polite" class="text-center font-semibold mb-4"></div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="amount" class="block text-lg font-semibold text-gray-700 mb-2">Amount (₹)</label>
+                                <input type="number" id="amount" class="w-full p-4 border border-gray-300 rounded-lg" required>
+                            </div>
+                            <div>
+                                <label for="type" class="block text-lg font-semibold text-gray-700 mb-2">Type</label>
+                                <select id="type" class="w-full p-4 border border-gray-300 rounded-lg" required>
+                                    <option value="income">Income</option>
+                                    <option value="expense">Expense</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div>
+                                <label for="description" class="block text-lg font-semibold text-gray-700 mb-2">Description</label>
+                                <input type="text" id="description" class="w-full p-4 border border-gray-300 rounded-lg" placeholder="e.g., Groceries, Salary" required>
+                            </div>
+                            <div>
+                                <label for="tx_date" class="block text-lg font-semibold text-gray-700 mb-2">Date</label>
+                                <input type="date" id="tx_date" class="w-full p-4 border border-gray-300 rounded-lg" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg">
+                            <i class="ph-bold ph-plus-circle mr-2" aria-hidden="true"></i> Log Transaction
+                        </button>
+                    </form>
+                </div>
+            </section>
+            <section id="goals" class="page" aria-labelledby="goals-heading">
+                <h2 id="goals-heading" tabindex="-1" class="text-3xl font-bold text-gray-800 text-center mb-8">Set & Achieve Your Financial Goals</h2>
+                <div class="max-w-4xl mx-auto p-8"> <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        
+                        <div id="goalForm" class="bg-gradient-to-br from-blue-50 via-gray-50 to-indigo-50 border border-gray-200 p-8 rounded-3xl shadow-2xl">
+                            <h3 class="text-2xl font-semibold text-blue-800 mb-4">Create a New Goal</h3>
+                            <div class="grid grid-cols-1 gap-6 mb-6">
+                                <div>
+                                    <label for="goalName" class="block text-lg font-semibold text-gray-700 mb-2">Goal Name</label>
+                                    <input type="text" id="goalName" class="w-full p-4 border border-gray-300 rounded-lg" required>
+                                </div>
+                                <div>
+                                    <label for="goalAmount" class="block text-lg font-semibold text-gray-700 mb-2">Target Amount (₹)</label>
+                                    <input type="number" id="goalAmount" class="w-full p-4 border border-gray-300 rounded-lg" required>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <label for="goalDuration" class="block text-lg font-semibold text-gray-700 mb-2">Duration (in months)</label>
+                                <input type="number" id="goalDuration" class="w-full p-4 border border-gray-300 rounded-lg" required>
+                            </div>
+                            <button onclick="addGoal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg">
+                                <i class="ph-bold ph-plus-circle mr-2" aria-hidden="true"></i> Add Goal
+                            </button>
+                        </div>
+    
+                        <div id="goalList">
+                            <h3 class="text-2xl font-semibold text-blue-800 mb-4">Your Active Goals</h3>
+                            <div id="goalCardsContainer" class="space-y-6 h-96 overflow-y-auto pr-2">
+                                </div>
+                        </div>
+                    </div>
+    
+                    <div id="inflationShield" class="mt-10 p-6 bg-white rounded-2xl shadow-lg border border-red-200">
+                        <div class="flex items-start mb-4">
+                            <i class="ph-bold ph-shield-warning text-4xl text-red-500 mr-4" aria-hidden="true"></i>
+                            <div>
+                                <h3 class="text-xl font-bold text-red-700">The Inflation Shield</h3>
+                                <p class="text-gray-600">Protect your goals from losing value over time. Select a goal to see its future cost.</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="goalSelector" class="block font-semibold text-gray-700 mb-2">Select a Goal to Analyze:</label>
+                            <select id="goalSelector" onchange="runInflationShield()" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <option>No goals set yet</option>
+                            </select>
+                        </div>
+                        <div id="shieldResult" class="mt-4 p-4 bg-red-50 rounded-lg border-l-4 border-red-400 hidden">
+                            <p id="shieldResultText" class="text-red-800"></p>
+                            <div class="mt-3 pt-3 border-t border-red-200">
+                                <p class="text-sm font-bold text-green-800 flex items-center"><i class="ph-bold ph-lightbulb-filament mr-2"></i>AI Shield Strategy:</p>
+                                <p id="shieldStrategyText" class="text-sm text-green-700 italic mt-1"></p>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div id="nudgesContainer" class="mt-8 space-y-4">
+                        <h3 class="text-2xl font-semibold text-green-800 mb-4">AI Coach Nudges</h3>
+                    </div>
+                </div>
+            </section>
+
+            <section id="suggestions" class="page" aria-labelledby="suggestions-heading">
+                <h2 id="suggestions-heading" tabindex="-1" class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center">Personalized AI Insights</h2>
+                <div id="goalSuggestionsContainer" class="mb-8">
+                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-yellow-200">
+                        <h3 class="text-xl font-semibold text-yellow-700 mb-4 flex items-center">
+                            <i class="ph-bold ph-sparkle-fill text-2xl mr-2" aria-hidden="true"></i> Spending Analysis
+                        </h3>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-500">
+                            <li>Your **dining out** expenses seem high this month.</li>
+                            <li>You are on track with your **entertainment budget**.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-blue-200">
+                        <h3 class="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                            <i class="ph-bold ph-trend-up-fill text-2xl mr-2" aria-hidden="true"></i> Investment Ideas
+                        </h3>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-500">
+                            <li>With your savings rate, you could invest in a **low-cost index fund**.</li>
+                            <li>Explore **high-yield savings accounts** for your emergency fund.</li>
+                        </ul>
+                        <div class="text-center mt-8">
+                      <button onclick="getAISuggestion()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg">
+                         Get AI Suggestion
+                     </button>
+                      <p id="aiSuggestion" class="mt-4 text-gray-700 font-medium"></p>
+                    </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="chatbot" class="page" aria-labelledby="chatbot-heading">
+     0           <h2 id="chatbot-heading" tabindex="-1" class="text-2xl sm:text-3xl font-bold text-gray-800 text-center">Chat with the AI Finance Bot</h2>
+                <iframe src="https://www.chatbase.co/chatbot-iframe/h4atN0TGkzocFQoVf8Hmw" title="AI Finance Bot Chat Window" width="100%" style="height: 550px; border-radius: 12px;" frameborder="0"></iframe>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
