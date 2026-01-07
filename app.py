@@ -20,7 +20,7 @@ API_KEY = os.environ.get("GEMINI_API_KEY")
 if not API_KEY:
     # --- FALLBACK KEY ---
     # IMPORTANT: Replace this with your actual key or set the environment variable
-    API_KEY = "AIzaSyBC6kOovgY-LQJCcQPJbt6diuokz3Sfyx4" 
+    API_KEY = "" 
 
 try:
     genai.configure(api_key=API_KEY)
@@ -318,4 +318,5 @@ def get_combined_ai_suggestion_from_db():
 
 
 if __name__ == '__main__':
+
     app.run(debug=True, port=5000)
